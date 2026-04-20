@@ -71,3 +71,14 @@ def track_all(starttime=None,timezone=0,target=None,loc=None,exptime=None,readou
         startrack.append(tempaltaz)
         timetrack.append(temptime)
     return timetrack, startrack
+
+def locate_all(starttime=None,timezone=0,target=None,loc=None):
+    tempaltaz = []
+    UTCtime = Time(starttime) + timezone * u.hour
+    for i in range(len(target)):
+        tempra = HMStoDeg(target[i][0][0], target[i][0][1], target[i][0][2])
+        tempdec = DMStoDeg(target[i][1][0], target[i][1][1], target[i][1][2], target[i][1][3])
+        coord = SkyCoord(ra=tempra * u.deg, dec=tempdec * u.deg, frame='icrs')
+        tempaltaz.append(cal_altaz(coord, UTCtime, loc))
+
+    return tempaltaz

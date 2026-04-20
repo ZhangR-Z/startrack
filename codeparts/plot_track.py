@@ -12,6 +12,8 @@ def plot_track(timetrack, startrack,objname=None):
         A list of tracking times for each target. Each element is a list of datetime objects corresponding to the tracking points.
     startrack : list
         A list of tracking points for each target. Each element is a list of tuples (altitude, azimuth) in degrees corresponding to the tracking points.
+    objname : list
+        A list of object names for each targets. If not input, the targets will be named as Target X
 
     Returns
     -------
@@ -50,7 +52,7 @@ def plot_track(timetrack, startrack,objname=None):
         tempaz =  np.array(startrack[i]).T[1]
         az_rad = np.radians(tempaz)
         r = 90 - tempalt
-        ax.plot(az_rad, r, linewidth=2, label='Star Trajectory')
+        ax.plot(az_rad, r, linewidth=2, label=objname[i])
         if i==0:
             ax.scatter(az_rad[0], r[0], color='green', marker='<', s=100, label='Start', zorder=5)
         elif i!=0:
@@ -61,15 +63,13 @@ def plot_track(timetrack, startrack,objname=None):
         finalr = r[-1]
 
     ax.set_theta_zero_location('N')
-        
     ax.set_theta_direction(-1) 
-
     ax.set_xticks(np.radians([0, 45, 90, 135, 180, 225, 270, 315]))
-    ax.set_xticklabels(['N (0°)', 'NE', 'E (90°)', 'SE', 'S (180°)', 'SW', 'W (270°)', 'NW'])
-
+    ax.set_xticklabels(['N (0°)', 'NE', 'E (90°)', 'SE', 'S (180°)', 'SW', 'W (270°)', 'NW'],fontsize=14)
     ax.set_yticks([0, 30, 60, 90])
-    ax.set_yticklabels(['90° (Zenith)', '60°', '30°', '0° (Horizon)'], color='grey')
-
+    ax.set_yticklabels(['90° (Zenith)', '60°', '30°', '0° (Horizon)'], color='grey',fontsize=14)
+    ax.tick_params(labelsize=12)
+    ax.legend(bbox_to_anchor=(1,-0.05),fontsize=14,ncol=4)
     ax.set_ylim(0, 90)
 
     plt.tight_layout()
